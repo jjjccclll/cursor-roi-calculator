@@ -8,6 +8,9 @@ dist/
 gitdir/
 .git.broken/
 
+# Accidental nested repo under cursor roi/ (track .gitattributes only)
+cursor roi/.git/
+
 # OS / editor
 .DS_Store
 *.log
