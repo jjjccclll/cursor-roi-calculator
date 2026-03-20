@@ -118,21 +118,22 @@ function MetricCard(props: {
         : "text-slate-50";
 
   return (
-    <div className="relative rounded-2xl border border-white/10 bg-white/5 p-4 shadow-sm transition-all duration-300 sm:p-5">
+    <div className="relative min-w-0 overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4 shadow-sm transition-all duration-300 sm:p-5">
       {props.hero ? (
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-70">
           <div className="absolute -top-20 left-1/2 h-64 w-[32rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-500/30 via-fuchsia-500/10 to-cyan-500/30 blur-3xl" />
         </div>
       ) : null}
 
-      <div className="relative">
+      <div className="relative min-w-0">
         <div className="text-sm text-slate-300">{props.label}</div>
         <div
           className={[
-            "mt-2 whitespace-nowrap font-semibold tracking-tight transition-all duration-300 leading-none text-[clamp(1.15rem,2.9vw,2.05rem)]",
+            "mt-2 min-w-0 max-w-full break-words font-semibold tracking-tight transition-all duration-300 leading-tight text-[clamp(1.05rem,2.9vw,2.05rem)] [overflow-wrap:anywhere]",
             toneStyles,
             props.hero ? "drop-shadow-[0_0_22px_rgba(99,102,241,0.35)]" : "",
           ].join(" ")}
+          title={props.value}
         >
           {props.value}
         </div>
@@ -962,7 +963,7 @@ export default function CursorAccountIntelligence() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                       <MetricCard
                         label="Annual Cursor spend"
                         value={formatUSD(tab1.annualSpend)}
@@ -1234,7 +1235,7 @@ export default function CursorAccountIntelligence() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+                    <div className="grid min-w-0 grid-cols-1 gap-4 md:grid-cols-4">
                       <MetricCard label="Additional annual cost for new seats" value={formatUSD(tab2.additionalAnnualCost)} sub={`${newSeats} seats`} />
                       <MetricCard label="Projected savings at Month 6" value={formatUSD(tab2.savingsM6)} sub="Cumulative new-team savings" tone="good" />
                       <MetricCard
@@ -1304,16 +1305,20 @@ export default function CursorAccountIntelligence() {
                                 border: "1px solid rgba(255,255,255,0.12)",
                                 borderRadius: 12,
                               }}
-                              formatter={(v: unknown, name: string) => {
+                              formatter={(v: unknown, name: unknown) => {
                                 const num = Number(v);
-                                if (name.toLowerCase().includes("roi")) return `${num.toFixed(1)}x`;
-                                return formatUSD(num);
+                                const nameStr = typeof name === "string" ? name : String(name ?? "");
+                                if (nameStr.toLowerCase().includes("roi")) {
+                                  return `${Number.isFinite(num) ? num.toFixed(1) : "—"}x`;
+                                }
+                                return Number.isFinite(num) ? formatUSD(num) : String(v ?? "");
                               }}
                               labelFormatter={(label) => `Month ${label}`}
                             />
 
                             {tab2.breakevenMonth !== null ? (
                               <ReferenceLine
+                                yAxisId="left"
                                 x={tab2.breakevenMonth}
                                 stroke="rgba(52,211,153,0.5)"
                                 strokeDasharray="4 4"
@@ -1612,7 +1617,7 @@ export default function CursorAccountIntelligence() {
                         </div>
                       </div>
 
-                      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+                      <div className="mt-4 grid min-w-0 grid-cols-1 gap-4 md:grid-cols-3">
                         <MetricCard label="Annual Bugbot cost" value={formatUSD(tab3.bugbotAnnualCost)} sub={`${bugbotSeats} seats × $${BUGBOT_PRICE_MONTHLY}/mo`} />
                         <MetricCard
                           label="Hours saved per developer per week"
@@ -1673,7 +1678,7 @@ export default function CursorAccountIntelligence() {
                         </div>
                       </div>
 
-                      <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-4">
+                      <div className="mt-5 grid min-w-0 grid-cols-1 gap-4 md:grid-cols-4">
                         <MetricCard label="Total additional annual investment" value={formatUSD(tab3.combinedAdditionalAnnualInvestment)} sub="Enabled toggles + Bugbot" />
                         <MetricCard label="Total additional annual value generated" value={formatUSD(tab3.combinedAdditionalAnnualValue)} sub="Incremental value only" tone="good" />
                         <MetricCard hero label="Combined annual ROI multiple" value={`${tab3.combinedRoiMultiple.toFixed(1)}x`} sub={`Base ROI: ${tab1.roiMultiple.toFixed(1)}x`} tone={tab3.combinedRoiMultiple >= 1 ? "good" : "bad"} />
