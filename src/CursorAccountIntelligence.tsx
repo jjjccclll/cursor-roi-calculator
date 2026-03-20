@@ -103,6 +103,7 @@ function SegmentedControl<T extends string>(props: {
   );
 }
 
+/** Primary figure + label below; value size is identical on every card at each breakpoint. */
 function MetricCard(props: {
   label: string;
   value: string;
@@ -117,27 +118,47 @@ function MetricCard(props: {
         ? "text-rose-400"
         : "text-slate-50";
 
+  // Fixed steps (no clamp) — identical on every card: compact phones/tablets, larger from lg up (~1024px+).
+  const valueTypography =
+    "text-2xl font-bold tabular-nums tracking-tight leading-none lg:text-3xl";
+
   return (
-    <div className="relative min-w-0 overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-4 shadow-sm transition-all duration-300 sm:p-5">
+    <div className="relative flex h-full min-h-0 min-w-0 flex-col rounded-2xl border border-white/10 bg-white/5 p-4 shadow-sm sm:p-5">
       {props.hero ? (
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-70">
-          <div className="absolute -top-20 left-1/2 h-64 w-[32rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-500/30 via-fuchsia-500/10 to-cyan-500/30 blur-3xl" />
+          <div className="absolute -top-20 left-1/2 h-64 w-[min(100vw,32rem)] -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-500/30 via-fuchsia-500/10 to-cyan-500/30 blur-3xl" />
         </div>
       ) : null}
 
-      <div className="relative min-w-0">
-        <div className="text-sm text-slate-300">{props.label}</div>
-        <div
-          className={[
-            "mt-2 min-w-0 max-w-full break-words font-semibold tracking-tight transition-all duration-300 leading-tight text-[clamp(1.05rem,2.9vw,2.05rem)] [overflow-wrap:anywhere]",
-            toneStyles,
-            props.hero ? "drop-shadow-[0_0_22px_rgba(99,102,241,0.35)]" : "",
-          ].join(" ")}
-          title={props.value}
-        >
-          {props.value}
+      <div className="relative z-[1] flex min-h-0 min-w-0 flex-1 flex-col">
+        {/* Metric value — same font size on every card; nowrap + horizontal scroll if needed (no mid-string wrap) */}
+        <div className="min-w-0 shrink-0 overflow-x-auto overscroll-x-contain">
+          <p
+            className={[
+              valueTypography,
+              "whitespace-nowrap",
+              toneStyles,
+              props.hero ? "drop-shadow-[0_0_22px_rgba(99,102,241,0.35)]" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            title={props.value}
+          >
+            {props.value}
+          </p>
         </div>
-        {props.sub ? <div className="mt-1 text-sm text-slate-400">{props.sub}</div> : null}
+
+        {/* Label + sub — wrap only at word boundaries */}
+        <div className="mt-3 min-w-0 flex-1 sm:mt-4">
+          <p className="text-pretty text-sm font-medium leading-snug text-slate-400 hyphens-none break-normal">
+            {props.label}
+          </p>
+          {props.sub ? (
+            <p className="mt-2 text-pretty text-xs leading-snug text-slate-500 hyphens-none break-normal">
+              {props.sub}
+            </p>
+          ) : null}
+        </div>
       </div>
     </div>
   );
@@ -963,7 +984,7 @@ export default function CursorAccountIntelligence() {
                       </div>
                     </div>
 
-                    <div className="grid min-w-0 grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
                       <MetricCard
                         label="Annual Cursor spend"
                         value={formatUSD(tab1.annualSpend)}
@@ -1235,7 +1256,7 @@ export default function CursorAccountIntelligence() {
                       </div>
                     </div>
 
-                    <div className="grid min-w-0 grid-cols-1 gap-4 md:grid-cols-4">
+                    <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
                       <MetricCard label="Additional annual cost for new seats" value={formatUSD(tab2.additionalAnnualCost)} sub={`${newSeats} seats`} />
                       <MetricCard label="Projected savings at Month 6" value={formatUSD(tab2.savingsM6)} sub="Cumulative new-team savings" tone="good" />
                       <MetricCard
@@ -1617,7 +1638,7 @@ export default function CursorAccountIntelligence() {
                         </div>
                       </div>
 
-                      <div className="mt-4 grid min-w-0 grid-cols-1 gap-4 md:grid-cols-3">
+                      <div className="mt-4 grid min-w-0 grid-cols-1 items-stretch gap-4 sm:gap-5 md:grid-cols-3">
                         <MetricCard label="Annual Bugbot cost" value={formatUSD(tab3.bugbotAnnualCost)} sub={`${bugbotSeats} seats × $${BUGBOT_PRICE_MONTHLY}/mo`} />
                         <MetricCard
                           label="Hours saved per developer per week"
@@ -1663,7 +1684,7 @@ export default function CursorAccountIntelligence() {
                           </div>
                         </div>
 
-                        <div className="w-full md:w-[360px]">
+                        <div className="w-full min-w-0 shrink-0 md:max-w-sm">
                           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                             <div className="text-xs text-slate-400">Combined ROI impact</div>
                             <div className="mt-1 text-sm font-semibold text-emerald-300">{tab3.combinedRoiMultiple.toFixed(1)}x overall ROI multiple</div>
@@ -1678,7 +1699,7 @@ export default function CursorAccountIntelligence() {
                         </div>
                       </div>
 
-                      <div className="mt-5 grid min-w-0 grid-cols-1 gap-4 md:grid-cols-4">
+                      <div className="mt-5 grid min-w-0 grid-cols-1 items-stretch gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
                         <MetricCard label="Total additional annual investment" value={formatUSD(tab3.combinedAdditionalAnnualInvestment)} sub="Enabled toggles + Bugbot" />
                         <MetricCard label="Total additional annual value generated" value={formatUSD(tab3.combinedAdditionalAnnualValue)} sub="Incremental value only" tone="good" />
                         <MetricCard hero label="Combined annual ROI multiple" value={`${tab3.combinedRoiMultiple.toFixed(1)}x`} sub={`Base ROI: ${tab1.roiMultiple.toFixed(1)}x`} tone={tab3.combinedRoiMultiple >= 1 ? "good" : "bad"} />
