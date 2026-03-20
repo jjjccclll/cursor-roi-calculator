@@ -78,7 +78,11 @@ function SegmentedControl<T extends string>(props: {
   ariaLabel: string;
 }) {
   return (
-    <div className="flex w-full overflow-hidden rounded-xl border border-white/10 bg-white/5 p-1">
+    <div
+      role="group"
+      aria-label={props.ariaLabel}
+      className="flex w-full min-w-0 flex-row rounded-xl border border-white/10 bg-white/5 p-1"
+    >
       {props.options.map((opt) => {
         const active = opt.value === props.value;
         return (
@@ -87,7 +91,7 @@ function SegmentedControl<T extends string>(props: {
             type="button"
             onClick={() => props.onChange(opt.value)}
             className={[
-              "flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200",
+              "min-w-0 flex-1 rounded-lg px-2 py-2 text-center text-xs font-medium leading-tight transition-all duration-200 sm:px-3 sm:text-sm",
               active
                 ? "bg-gradient-to-r from-brand-500/25 to-fuchsia-500/20 text-slate-50 shadow-glow"
                 : "text-slate-300 hover:text-slate-100",
@@ -938,9 +942,9 @@ export default function CursorAccountIntelligence() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400 mb-1">Estimate confidence</div>
+                    <div className="flex min-w-0 flex-col gap-3">
+                      <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <div className="mb-1 text-xs text-slate-400">Estimate confidence</div>
                         <SegmentedControl<EstimateMode>
                           value={estimateMode}
                           onChange={setEstimateMode}
@@ -952,34 +956,36 @@ export default function CursorAccountIntelligence() {
                           ariaLabel="Estimate confidence"
                         />
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400 mb-1">Billing</div>
-                        <SegmentedControl<BillingCadence>
-                          value={billingCadence}
-                          onChange={setBillingCadence}
-                          options={[
-                            { value: "monthly", label: "Monthly" },
-                            { value: "annual", label: "Annual (20% off)" },
-                          ]}
-                          ariaLabel="Billing cadence"
-                        />
-                      </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400">Export</div>
-                        <button
-                          type="button"
-                          onClick={copySummary}
-                          className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-slate-100 transition hover:bg-white/10 disabled:opacity-60"
-                          aria-label="Copy Summary"
-                        >
-                          {copyState === "ok" ? "Copied" : copyState === "fail" ? "Copy failed" : "Copy Summary"}
-                        </button>
-                        <div className="mt-1 text-xs text-slate-400">Clipboard-ready for email/Slack</div>
-                      </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400">Customer</div>
-                        <div className="mt-1 text-sm font-semibold text-slate-100">
-                          {customerName} · {currentSeats} seats · {currentPlan === "teams" ? "Teams" : "Enterprise"}
+                      <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                          <div className="mb-1 text-xs text-slate-400">Billing</div>
+                          <SegmentedControl<BillingCadence>
+                            value={billingCadence}
+                            onChange={setBillingCadence}
+                            options={[
+                              { value: "monthly", label: "Monthly" },
+                              { value: "annual", label: "Annual (20% off)" },
+                            ]}
+                            ariaLabel="Billing cadence"
+                          />
+                        </div>
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                          <div className="text-xs text-slate-400">Export</div>
+                          <button
+                            type="button"
+                            onClick={copySummary}
+                            className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-slate-100 transition hover:bg-white/10 disabled:opacity-60"
+                            aria-label="Copy Summary"
+                          >
+                            {copyState === "ok" ? "Copied" : copyState === "fail" ? "Copy failed" : "Copy Summary"}
+                          </button>
+                          <div className="mt-1 text-xs text-slate-400">Clipboard-ready for email/Slack</div>
+                        </div>
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 sm:col-span-2 lg:col-span-1">
+                          <div className="text-xs text-slate-400">Customer</div>
+                          <div className="mt-1 text-sm font-semibold text-slate-100">
+                            {customerName} · {currentSeats} seats · {currentPlan === "teams" ? "Teams" : "Enterprise"}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1210,9 +1216,9 @@ export default function CursorAccountIntelligence() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400 mb-1">Estimate confidence</div>
+                    <div className="flex min-w-0 flex-col gap-3">
+                      <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <div className="mb-1 text-xs text-slate-400">Estimate confidence</div>
                         <SegmentedControl<EstimateMode>
                           value={estimateMode}
                           onChange={setEstimateMode}
@@ -1224,34 +1230,36 @@ export default function CursorAccountIntelligence() {
                           ariaLabel="Estimate confidence"
                         />
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400 mb-1">Billing</div>
-                        <SegmentedControl<BillingCadence>
-                          value={billingCadence}
-                          onChange={setBillingCadence}
-                          options={[
-                            { value: "monthly", label: "Monthly" },
-                            { value: "annual", label: "Annual (20% off)" },
-                          ]}
-                          ariaLabel="Billing cadence"
-                        />
-                      </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400">Export</div>
-                        <button
-                          type="button"
-                          onClick={copySummary}
-                          className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-slate-100 transition hover:bg-white/10 disabled:opacity-60"
-                          aria-label="Copy Summary"
-                        >
-                          {copyState === "ok" ? "Copied" : copyState === "fail" ? "Copy failed" : "Copy Summary"}
-                        </button>
-                        <div className="mt-1 text-xs text-slate-400">Clipboard-ready for email/Slack</div>
-                      </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400">Customer</div>
-                        <div className="mt-1 text-sm font-semibold text-slate-100">
-                          {customerName} · {currentSeats} seats · {currentPlan === "teams" ? "Teams" : "Enterprise"}
+                      <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                          <div className="mb-1 text-xs text-slate-400">Billing</div>
+                          <SegmentedControl<BillingCadence>
+                            value={billingCadence}
+                            onChange={setBillingCadence}
+                            options={[
+                              { value: "monthly", label: "Monthly" },
+                              { value: "annual", label: "Annual (20% off)" },
+                            ]}
+                            ariaLabel="Billing cadence"
+                          />
+                        </div>
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                          <div className="text-xs text-slate-400">Export</div>
+                          <button
+                            type="button"
+                            onClick={copySummary}
+                            className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-slate-100 transition hover:bg-white/10 disabled:opacity-60"
+                            aria-label="Copy Summary"
+                          >
+                            {copyState === "ok" ? "Copied" : copyState === "fail" ? "Copy failed" : "Copy Summary"}
+                          </button>
+                          <div className="mt-1 text-xs text-slate-400">Clipboard-ready for email/Slack</div>
+                        </div>
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 sm:col-span-2 lg:col-span-1">
+                          <div className="text-xs text-slate-400">Customer</div>
+                          <div className="mt-1 text-sm font-semibold text-slate-100">
+                            {customerName} · {currentSeats} seats · {currentPlan === "teams" ? "Teams" : "Enterprise"}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1396,9 +1404,9 @@ export default function CursorAccountIntelligence() {
                   <div className="text-base font-semibold text-slate-100">SKU Upsell Modeling</div>
 
                   <div className="mt-5 space-y-6">
-                    <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400 mb-1">Estimate confidence</div>
+                    <div className="flex min-w-0 flex-col gap-3">
+                      <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <div className="mb-1 text-xs text-slate-400">Estimate confidence</div>
                         <SegmentedControl<EstimateMode>
                           value={estimateMode}
                           onChange={setEstimateMode}
@@ -1410,34 +1418,36 @@ export default function CursorAccountIntelligence() {
                           ariaLabel="Estimate confidence"
                         />
                       </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400 mb-1">Billing</div>
-                        <SegmentedControl<BillingCadence>
-                          value={billingCadence}
-                          onChange={setBillingCadence}
-                          options={[
-                            { value: "monthly", label: "Monthly" },
-                            { value: "annual", label: "Annual (20% off)" },
-                          ]}
-                          ariaLabel="Billing cadence"
-                        />
-                      </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400">Export</div>
-                        <button
-                          type="button"
-                          onClick={copySummary}
-                          className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-slate-100 transition hover:bg-white/10 disabled:opacity-60"
-                          aria-label="Copy Summary"
-                        >
-                          {copyState === "ok" ? "Copied" : copyState === "fail" ? "Copy failed" : "Copy Summary"}
-                        </button>
-                        <div className="mt-1 text-xs text-slate-400">Clipboard-ready for email/Slack</div>
-                      </div>
-                      <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                        <div className="text-xs text-slate-400">Customer</div>
-                        <div className="mt-1 text-sm font-semibold text-slate-100">
-                          {customerName} · {currentSeats} seats · {currentPlan === "teams" ? "Teams" : "Enterprise"}
+                      <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                          <div className="mb-1 text-xs text-slate-400">Billing</div>
+                          <SegmentedControl<BillingCadence>
+                            value={billingCadence}
+                            onChange={setBillingCadence}
+                            options={[
+                              { value: "monthly", label: "Monthly" },
+                              { value: "annual", label: "Annual (20% off)" },
+                            ]}
+                            ariaLabel="Billing cadence"
+                          />
+                        </div>
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                          <div className="text-xs text-slate-400">Export</div>
+                          <button
+                            type="button"
+                            onClick={copySummary}
+                            className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-semibold text-slate-100 transition hover:bg-white/10 disabled:opacity-60"
+                            aria-label="Copy Summary"
+                          >
+                            {copyState === "ok" ? "Copied" : copyState === "fail" ? "Copy failed" : "Copy Summary"}
+                          </button>
+                          <div className="mt-1 text-xs text-slate-400">Clipboard-ready for email/Slack</div>
+                        </div>
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 sm:col-span-2 lg:col-span-1">
+                          <div className="text-xs text-slate-400">Customer</div>
+                          <div className="mt-1 text-sm font-semibold text-slate-100">
+                            {customerName} · {currentSeats} seats · {currentPlan === "teams" ? "Teams" : "Enterprise"}
+                          </div>
                         </div>
                       </div>
                     </div>
