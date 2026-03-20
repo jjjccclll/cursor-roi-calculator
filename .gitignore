@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Broken / alternate git metadata (never commit)
+gitdir/
+.git.broken/
+
+# OS / editor
+.DS_Store
+*.log
+.env
+.env.*
+
+# Vite
+*.local
