@@ -91,7 +91,7 @@ function SegmentedControl<T extends string>(props: {
             type="button"
             onClick={() => props.onChange(opt.value)}
             className={[
-              "min-w-0 flex-1 rounded-lg px-2 py-2 text-center text-xs font-medium leading-tight transition-all duration-200 sm:px-3 sm:text-sm",
+              "min-w-0 flex-1 rounded-lg px-3 py-2.5 text-center text-sm font-medium leading-snug transition-all duration-200 sm:px-4",
               active
                 ? "bg-gradient-to-r from-brand-500/25 to-fuchsia-500/20 text-slate-50 shadow-glow"
                 : "text-slate-300 hover:text-slate-100",
@@ -122,12 +122,12 @@ function MetricCard(props: {
         ? "text-rose-400"
         : "text-slate-50";
 
-  // Fixed steps (no clamp) — identical on every card: compact phones/tablets, larger from lg up (~1024px+).
+  // Single fixed size on every card (no breakpoint scaling — avoids “shrinks when I widen the window”).
   const valueTypography =
-    "text-2xl font-bold tabular-nums tracking-tight leading-none lg:text-3xl";
+    "text-3xl font-bold tabular-nums tracking-tight leading-none";
 
   return (
-    <div className="relative flex h-full min-h-0 min-w-0 flex-col rounded-2xl border border-white/10 bg-white/5 p-4 shadow-sm sm:p-5">
+    <div className="relative flex h-full min-h-0 min-w-0 flex-col rounded-2xl border border-white/10 bg-white/5 p-5 shadow-sm">
       {props.hero ? (
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-70">
           <div className="absolute -top-20 left-1/2 h-64 w-[min(100vw,32rem)] -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-500/30 via-fuchsia-500/10 to-cyan-500/30 blur-3xl" />
@@ -153,7 +153,7 @@ function MetricCard(props: {
         </div>
 
         {/* Label + sub — wrap only at word boundaries */}
-        <div className="mt-3 min-w-0 flex-1 sm:mt-4">
+        <div className="mt-4 min-w-0 flex-1">
           <p className="text-pretty text-sm font-medium leading-snug text-slate-400 hyphens-none break-normal">
             {props.label}
           </p>
@@ -740,22 +740,23 @@ export default function CursorAccountIntelligence() {
   const tabTitle = `Cursor Account Intelligence — ${customerName}`;
 
   return (
-    <div className="min-h-screen">
-      <div className="relative overflow-hidden">
+    <div className="min-h-screen overflow-x-auto">
+      {/* Canonical layout width: resize the window (or scroll horizontally) to view; content does not keep reflowing wider/narrower. */}
+      <div className="relative mx-auto min-w-[820px] max-w-[1080px] overflow-hidden">
         <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-[#05060b] via-[#0a0b10] to-[#070813]" />
         <div
           aria-hidden="true"
           className="absolute -top-36 left-1/2 h-96 w-[56rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-500/20 via-fuchsia-500/10 to-cyan-500/20 blur-3xl"
         />
 
-        <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-10 sm:px-6 lg:px-8">
+        <div className="relative px-6 pb-14 pt-10 sm:px-8">
           <header className="flex flex-col gap-3">
             <div>
               <div className="inline-flex items-center gap-2">
                 <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-brand-500/30 via-fuchsia-500/15 to-cyan-500/20 shadow-glow" />
-                <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Cursor Account Intelligence</h1>
+                <h1 className="text-3xl font-semibold tracking-tight">Cursor Account Intelligence</h1>
               </div>
-              <p className="mt-2 max-w-2xl text-sm text-slate-300 sm:text-base">
+              <p className="mt-2 max-w-2xl text-base text-slate-300">
                 Internal QBR ROI modeling for Cursor AI deployment managers (client-side only).
               </p>
             </div>
@@ -956,19 +957,19 @@ export default function CursorAccountIntelligence() {
                           ariaLabel="Estimate confidence"
                         />
                       </div>
-                      <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                          <div className="mb-1 text-xs text-slate-400">Billing</div>
-                          <SegmentedControl<BillingCadence>
-                            value={billingCadence}
-                            onChange={setBillingCadence}
-                            options={[
-                              { value: "monthly", label: "Monthly" },
-                              { value: "annual", label: "Annual (20% off)" },
-                            ]}
-                            ariaLabel="Billing cadence"
-                          />
-                        </div>
+                      <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <div className="mb-1 text-xs text-slate-400">Billing</div>
+                        <SegmentedControl<BillingCadence>
+                          value={billingCadence}
+                          onChange={setBillingCadence}
+                          options={[
+                            { value: "monthly", label: "Monthly" },
+                            { value: "annual", label: "Annual (20% off)" },
+                          ]}
+                          ariaLabel="Billing cadence"
+                        />
+                      </div>
+                      <div className="grid min-w-0 grid-cols-2 gap-3">
                         <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                           <div className="text-xs text-slate-400">Export</div>
                           <button
@@ -981,7 +982,7 @@ export default function CursorAccountIntelligence() {
                           </button>
                           <div className="mt-1 text-xs text-slate-400">Clipboard-ready for email/Slack</div>
                         </div>
-                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 sm:col-span-2 lg:col-span-1">
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                           <div className="text-xs text-slate-400">Customer</div>
                           <div className="mt-1 text-sm font-semibold text-slate-100">
                             {customerName} · {currentSeats} seats · {currentPlan === "teams" ? "Teams" : "Enterprise"}
@@ -990,7 +991,7 @@ export default function CursorAccountIntelligence() {
                       </div>
                     </div>
 
-                    <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="grid min-w-0 grid-cols-2 items-stretch gap-5">
                       <MetricCard
                         label="Annual Cursor spend"
                         value={formatUSD(tab1.annualSpend)}
@@ -1230,19 +1231,19 @@ export default function CursorAccountIntelligence() {
                           ariaLabel="Estimate confidence"
                         />
                       </div>
-                      <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                          <div className="mb-1 text-xs text-slate-400">Billing</div>
-                          <SegmentedControl<BillingCadence>
-                            value={billingCadence}
-                            onChange={setBillingCadence}
-                            options={[
-                              { value: "monthly", label: "Monthly" },
-                              { value: "annual", label: "Annual (20% off)" },
-                            ]}
-                            ariaLabel="Billing cadence"
-                          />
-                        </div>
+                      <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <div className="mb-1 text-xs text-slate-400">Billing</div>
+                        <SegmentedControl<BillingCadence>
+                          value={billingCadence}
+                          onChange={setBillingCadence}
+                          options={[
+                            { value: "monthly", label: "Monthly" },
+                            { value: "annual", label: "Annual (20% off)" },
+                          ]}
+                          ariaLabel="Billing cadence"
+                        />
+                      </div>
+                      <div className="grid min-w-0 grid-cols-2 gap-3">
                         <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                           <div className="text-xs text-slate-400">Export</div>
                           <button
@@ -1255,7 +1256,7 @@ export default function CursorAccountIntelligence() {
                           </button>
                           <div className="mt-1 text-xs text-slate-400">Clipboard-ready for email/Slack</div>
                         </div>
-                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 sm:col-span-2 lg:col-span-1">
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                           <div className="text-xs text-slate-400">Customer</div>
                           <div className="mt-1 text-sm font-semibold text-slate-100">
                             {customerName} · {currentSeats} seats · {currentPlan === "teams" ? "Teams" : "Enterprise"}
@@ -1264,7 +1265,7 @@ export default function CursorAccountIntelligence() {
                       </div>
                     </div>
 
-                    <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+                    <div className="grid min-w-0 grid-cols-2 items-stretch gap-5">
                       <MetricCard label="Additional annual cost for new seats" value={formatUSD(tab2.additionalAnnualCost)} sub={`${newSeats} seats`} />
                       <MetricCard label="Projected savings at Month 6" value={formatUSD(tab2.savingsM6)} sub="Cumulative new-team savings" tone="good" />
                       <MetricCard
@@ -1418,19 +1419,19 @@ export default function CursorAccountIntelligence() {
                           ariaLabel="Estimate confidence"
                         />
                       </div>
-                      <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                          <div className="mb-1 text-xs text-slate-400">Billing</div>
-                          <SegmentedControl<BillingCadence>
-                            value={billingCadence}
-                            onChange={setBillingCadence}
-                            options={[
-                              { value: "monthly", label: "Monthly" },
-                              { value: "annual", label: "Annual (20% off)" },
-                            ]}
-                            ariaLabel="Billing cadence"
-                          />
-                        </div>
+                      <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <div className="mb-1 text-xs text-slate-400">Billing</div>
+                        <SegmentedControl<BillingCadence>
+                          value={billingCadence}
+                          onChange={setBillingCadence}
+                          options={[
+                            { value: "monthly", label: "Monthly" },
+                            { value: "annual", label: "Annual (20% off)" },
+                          ]}
+                          ariaLabel="Billing cadence"
+                        />
+                      </div>
+                      <div className="grid min-w-0 grid-cols-2 gap-3">
                         <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                           <div className="text-xs text-slate-400">Export</div>
                           <button
@@ -1443,7 +1444,7 @@ export default function CursorAccountIntelligence() {
                           </button>
                           <div className="mt-1 text-xs text-slate-400">Clipboard-ready for email/Slack</div>
                         </div>
-                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 sm:col-span-2 lg:col-span-1">
+                        <div className="min-w-0 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                           <div className="text-xs text-slate-400">Customer</div>
                           <div className="mt-1 text-sm font-semibold text-slate-100">
                             {customerName} · {currentSeats} seats · {currentPlan === "teams" ? "Teams" : "Enterprise"}
@@ -1648,7 +1649,7 @@ export default function CursorAccountIntelligence() {
                         </div>
                       </div>
 
-                      <div className="mt-4 grid min-w-0 grid-cols-1 items-stretch gap-4 sm:gap-5 md:grid-cols-3">
+                      <div className="mt-4 grid min-w-0 grid-cols-3 items-stretch gap-4">
                         <MetricCard label="Annual Bugbot cost" value={formatUSD(tab3.bugbotAnnualCost)} sub={`${bugbotSeats} seats × $${BUGBOT_PRICE_MONTHLY}/mo`} />
                         <MetricCard
                           label="Hours saved per developer per week"
@@ -1709,7 +1710,7 @@ export default function CursorAccountIntelligence() {
                         </div>
                       </div>
 
-                      <div className="mt-5 grid min-w-0 grid-cols-1 items-stretch gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+                      <div className="mt-5 grid min-w-0 grid-cols-2 items-stretch gap-5">
                         <MetricCard label="Total additional annual investment" value={formatUSD(tab3.combinedAdditionalAnnualInvestment)} sub="Enabled toggles + Bugbot" />
                         <MetricCard label="Total additional annual value generated" value={formatUSD(tab3.combinedAdditionalAnnualValue)} sub="Incremental value only" tone="good" />
                         <MetricCard hero label="Combined annual ROI multiple" value={`${tab3.combinedRoiMultiple.toFixed(1)}x`} sub={`Base ROI: ${tab1.roiMultiple.toFixed(1)}x`} tone={tab3.combinedRoiMultiple >= 1 ? "good" : "bad"} />
